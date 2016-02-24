@@ -1,21 +1,22 @@
-FROM debian:stable
-
-MAINTAINER Jeremie Huchet <jeremie@dudie.fr>
+FROM debian:latest
+MAINTAINER Jeremie HUCHET
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update -qy \
+RUN apt-get update \
  && apt-get upgrade -qy
-RUN apt-get install -qy squid3 redsocks supervisor
 
-ADD squid.conf /etc/squid3/squid.conf
+RUN apt-get install -qy cntlm redsocks
+
+ADD cntlm.conf /etc/cntlm.conf
+RUN chmod 600 /etc/cntlm.conf
+
 ADD redsocks.conf /etc/redsocks.conf
-COPY supervisor.conf.d /etc/supervisor/conf.d
-
-VOLUME /etc/squid3/conf.d
 
 EXPOSE 3128
 EXPOSE 3129
-EXPOSE 3130
 
-CMD [ "supervisord", "-n" ]
+ADD startup.sh /startup.sh
+RUN chmod +x startup.sh
+
+CMD [ "/startup.sh" ]
