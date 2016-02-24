@@ -1,0 +1,3 @@
+cache_peer <public.proxy.ip.addr> parent <proxy.port> 0 no-query default
+cache_peer <private.proxy.ip.addr> parent <proxy.port> 0 no-query default login=<user>:<pass>
+never_direct allow all
